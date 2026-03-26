@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { Video, Plus, Search, Clock, ChevronLeft, Film } from "lucide-react";
+import { Video, Search, Clock, ChevronLeft, Film, FileVideo } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface Project {
   id: string;
   title: string;
-  thumbnail?: string;
   updatedAt: string;
-  status: "editing" | "done" | "published";
+  status: "processing" | "editing" | "done" | "published";
+  thumbnail?: string;
 }
 
 const mockProjects: Project[] = [
@@ -17,6 +17,7 @@ const mockProjects: Project[] = [
   { id: "3", title: "教程：如何使用AI剪辑", updatedAt: "3天前", status: "published" },
   { id: "4", title: "公司年会回顾", updatedAt: "1周前", status: "done" },
   { id: "5", title: "短视频 - 美食探店", updatedAt: "2周前", status: "published" },
+  { id: "6", title: "产品开箱测评", updatedAt: "2周前", status: "processing" },
 ];
 
 interface ProjectSidebarProps {
@@ -24,16 +25,17 @@ interface ProjectSidebarProps {
   onToggle: () => void;
   activeProject: string | null;
   onSelectProject: (id: string) => void;
-  onNewProject: () => void;
 }
 
 const statusColors: Record<Project["status"], string> = {
+  processing: "bg-amber-500/20 text-amber-400",
   editing: "bg-primary/20 text-primary",
   done: "bg-emerald-500/20 text-emerald-400",
   published: "bg-violet-500/20 text-violet-400",
 };
 
 const statusLabels: Record<Project["status"], string> = {
+  processing: "处理中",
   editing: "剪辑中",
   done: "已完成",
   published: "已发布",
@@ -44,7 +46,6 @@ export function ProjectSidebar({
   onToggle,
   activeProject,
   onSelectProject,
-  onNewProject,
 }: ProjectSidebarProps) {
   const [search, setSearch] = useState("");
 
@@ -56,7 +57,7 @@ export function ProjectSidebar({
     <aside
       className={cn(
         "h-screen bg-sidebar border-r border-sidebar-border flex flex-col transition-all duration-300 shrink-0",
-        collapsed ? "w-16" : "w-72"
+        collapsed ? "w-16" : "w-64"
       )}
     >
       {/* Header */}
@@ -84,27 +85,14 @@ export function ProjectSidebar({
         </Button>
       </div>
 
-      {/* New Project */}
-      <div className="p-3">
-        <Button
-          variant="glow"
-          className={cn("w-full justify-start gap-2", collapsed && "justify-center px-0")}
-          size="sm"
-          onClick={onNewProject}
-        >
-          <Plus className="w-4 h-4" />
-          {!collapsed && <span>新建项目</span>}
-        </Button>
-      </div>
-
       {/* Search */}
       {!collapsed && (
-        <div className="px-3 pb-2 animate-fade-in">
+        <div className="px-3 py-2 animate-fade-in">
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
             <input
               type="text"
-              placeholder="搜索项目..."
+              placeholder="搜索历史项目..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full bg-muted border border-border rounded-lg pl-8 pr-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50"
@@ -118,7 +106,7 @@ export function ProjectSidebar({
         {!collapsed && (
           <div className="flex items-center gap-1.5 px-2 py-1.5 text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
             <Clock className="w-3 h-3" />
-            <span>最近项目</span>
+            <span>历史项目</span>
           </div>
         )}
         {filtered.map((project) => (
@@ -133,7 +121,11 @@ export function ProjectSidebar({
             )}
           >
             <div className="w-8 h-8 rounded-md bg-muted flex items-center justify-center shrink-0">
-              <Video className="w-3.5 h-3.5 text-muted-foreground" />
+              {project.status === "processing" ? (
+                <FileVideo className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+              ) : (
+                <Video className="w-3.5 h-3.5 text-muted-foreground" />
+              )}
             </div>
             {!collapsed && (
               <div className="flex-1 min-w-0 animate-fade-in">
@@ -148,7 +140,23 @@ export function ProjectSidebar({
             )}
           </button>
         ))}
+
+        {filtered.length === 0 && !collapsed && (
+          <div className="text-center py-8 text-muted-foreground">
+            <Video className="w-8 h-8 mx-auto mb-2 opacity-30" />
+            <p className="text-xs">暂无匹配项目</p>
+          </div>
+        )}
       </div>
+
+      {/* Footer hint */}
+      {!collapsed && (
+        <div className="p-3 border-t border-sidebar-border">
+          <p className="text-[10px] text-muted-foreground text-center">
+            上传视频自动创建项目
+          </p>
+        </div>
+      )}
     </aside>
   );
 }
