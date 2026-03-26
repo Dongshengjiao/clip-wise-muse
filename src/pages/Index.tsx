@@ -18,7 +18,6 @@ const Index = () => {
         onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
         activeProject={activeProject}
         onSelectProject={setActiveProject}
-        onNewProject={() => setActiveProject(null)}
       />
 
       {/* Main Content */}
@@ -27,11 +26,13 @@ const Index = () => {
         <header className="h-12 border-b border-border flex items-center justify-between px-4 shrink-0">
           <div className="flex items-center gap-2">
             <h1 className="text-sm font-display font-semibold text-foreground">
-              {activeProject ? "产品宣传片 - 春季版" : "新建项目"}
+              {activeProject ? "产品宣传片 - 春季版" : "ClipFlow"}
             </h1>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
-              剪辑中
-            </span>
+            {activeProject && (
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+                剪辑中
+              </span>
+            )}
           </div>
           <Button
             variant="glow"
