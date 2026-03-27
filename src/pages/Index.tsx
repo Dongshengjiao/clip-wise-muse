@@ -47,14 +47,14 @@ const Index = () => {
 
         {/* Content Area */}
         <div className="flex-1 flex min-h-0">
-          {/* Chat */}
-          <div className="w-[420px] border-r border-border flex flex-col shrink-0">
-            <ChatPanel />
-          </div>
-
           {/* Video Preview */}
           <div className="flex-1 min-w-0">
             <VideoPreview />
+          </div>
+
+          {/* Chat */}
+          <div className="w-[420px] border-l border-border flex flex-col shrink-0">
+            <ChatPanel />
           </div>
         </div>
       </div>
