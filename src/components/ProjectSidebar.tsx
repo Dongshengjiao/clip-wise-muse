@@ -49,6 +49,7 @@ export function ProjectSidebar({
   onSelectProject,
 }: ProjectSidebarProps) {
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const filtered = mockProjects.filter((p) =>
     p.title.toLowerCase().includes(search.toLowerCase())
