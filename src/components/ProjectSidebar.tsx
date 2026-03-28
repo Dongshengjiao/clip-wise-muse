@@ -151,6 +151,21 @@ export function ProjectSidebar({
         )}
       </div>
 
+      {/* Analytics */}
+      <div className="px-2 py-1.5 border-t border-sidebar-border">
+        <button
+          onClick={() => navigate("/analytics")}
+          className="w-full flex items-center gap-3 rounded-lg px-2.5 py-2 text-sidebar-foreground hover:bg-sidebar-accent/50 transition-all"
+        >
+          <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
+            <BarChart3 className="w-3.5 h-3.5 text-primary" />
+          </div>
+          {!collapsed && (
+            <span className="text-xs font-medium animate-fade-in">流量监控</span>
+          )}
+        </button>
+      </div>
+
       {/* Footer hint */}
       {!collapsed && (
         <div className="p-3 border-t border-sidebar-border">
