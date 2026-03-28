@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Video, Search, Clock, ChevronLeft, Film, FileVideo } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Video, Search, Clock, ChevronLeft, Film, FileVideo, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
